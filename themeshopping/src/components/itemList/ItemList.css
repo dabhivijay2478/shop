@@ -1,0 +1,21 @@
+.item-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.item-list a {
+    text-decoration: none;
+}
+
+.item-list a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .item-list {
+        gap: 10px;
+    }
+}

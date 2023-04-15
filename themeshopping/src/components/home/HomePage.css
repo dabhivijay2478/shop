@@ -1,0 +1,13 @@
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+@media (min-width: 768px) {
+    section {
+        padding: 100px;
+    }
+}

@@ -1,0 +1,43 @@
+.item-card {
+    width: 200px;
+    margin: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item-card img {
+    display: block;
+    height: 200px;
+    object-fit: cover;
+}
+
+.item-brand {
+    font-size: 12px;
+    color: #999;
+    margin: 5px 10px;
+}
+
+.item-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px 10px;
+}
+
+.item-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 10px;
+}
+
+.item-price {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.item-rating {
+    font-size: 16px;
+    color: #ffcc00;
+}

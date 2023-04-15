@@ -1,0 +1,65 @@
+/* Navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(252, 190, 22);
+    color: #fff;
+    padding: 1rem;
+}
+
+/* Logo styles */
+.navbar h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Navigation links */
+.navbar-ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-ul li {
+    margin: 0 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Cart icon */
+.navbar-ul li:first-of-type {
+    font-size: 1.5rem;
+    position: relative;
+}
+
+.navbar-ul li:first-of-type .card-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: white;
+    color: #fff;
+    font-size: 0.8rem;
+    border-radius: 50%;
+    padding: 0.2rem;
+}
+
+/* Navigation button */
+.nav-btn {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    padding: 0.5rem 1rem;
+}
+
+.nav-btn:hover {
+    background-color: #fff;
+    color: #333;
+}
