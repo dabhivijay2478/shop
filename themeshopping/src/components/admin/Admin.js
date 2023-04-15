@@ -1,6 +1,19 @@
-import React from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 export default function Admin() {
+  const nav = useNavigate();
+
+  useEffect(() => {
+    const isLoggedIn = Cookies.get("Admin");
+    if (!isLoggedIn) {
+      return nav("/itemsection");
+    }
+  }, []);
+  const handleLogout = async () => {
+    Cookies.remove("Admin");
+    window.alert("Log Out");
+  };
   return (
     <>
       <button
@@ -54,17 +67,26 @@ export default function Admin() {
 
             <li>
               <NavLink
-                to="/Admindash/StudentReport"
+                to="/admin/userreport"
                 className="flex items-center px-3 text-white py-2 dark:text-white dark:hover:text-orange-500  rounded-lg dark:hover:bg-white overflow-hidden"
               >
                 <i class="fa-solid fa-chart-simple dark:hover:text-slate-800"></i>
                 <span className=" ml-3 ">User Report</span>
               </NavLink>
             </li>
+            <li>
+            <NavLink
+              to="/admin/productreport"
+              className="flex items-center px-3 text-white py-2 dark:text-white dark:hover:text-orange-500  rounded-lg dark:hover:bg-white overflow-hidden"
+            >
+              <i class="fa-solid fa-chart-simple dark:hover:text-slate-800"></i>
+              <span className=" ml-3 ">Product Report</span>
+            </NavLink>
+          </li>
 
             <li>
               <NavLink
-                to="/Admindash/AdminContactusreport"
+                to="/admin/contactus"
                 className="flex items-center px-3 text-white py-2 dark:text-white dark:hover:text-orange-500  rounded-lg dark:hover:bg-white overflow-hidden"
               >
                 <i class="fa-solid fa-address-book  dark:hover:text-slate-800"></i>
@@ -78,7 +100,9 @@ export default function Admin() {
                 className="flex items-center px-3 text-white py-2 dark:text-white dark:hover:text-orange-500 hover:bg-green-400 rounded-lg dark:hover:bg-white overflow-hidden"
               >
                 <i className="fa-solid fa-right-from-bracket dark:hover:text-slate-800"></i>
-                <span className="flex-1 ml-3 ">Logout</span>
+                <span className="flex-1 ml-3 " onClick={handleLogout}>
+                  Logout
+                </span>
               </NavLink>
             </li>
           </ul>

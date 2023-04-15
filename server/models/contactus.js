@@ -1,17 +1,19 @@
 const mongoose = require("mongoose");
-const addshow = new mongoose.Schema({
-  ShowName: {
+const contactschemas = new mongoose.Schema({
+  Name: {
     type: String,
     required: true,
   },
-  Question: {
+
+  Email: {
     type: String,
     required: true,
   },
-  Answer: {
+
+  Message: {
     type: String,
     required: true,
   },
 });
-const show = mongoose.model("show", addshow);
-module.exports = show;
+const contact = mongoose.model("contact", contactschemas);
+module.exports = contact;

@@ -1,7 +1,19 @@
-import React from "react";
-import { NavLink, Outlet } from "react-router-dom";
-
+import React, { useEffect } from "react";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 export default function Seller() {
+  const nav = useNavigate();
+
+  useEffect(() => {
+    const isLoggedIn = Cookies.get("Seller");
+    if (!isLoggedIn) {
+      return nav("/login");
+    }
+  }, []);
+  const handleLogout = async () => {
+    Cookies.remove("Seller");
+    window.alert("Log Out");
+  };
   return (
     <>
       <button
@@ -65,7 +77,7 @@ export default function Seller() {
 
             <li>
               <NavLink
-                to="/Admindash/AdminContactusreport"
+                to="/seller/productreport"
                 className="flex items-center px-3 text-white py-2 dark:text-white dark:hover:text-orange-500  rounded-lg dark:hover:bg-white overflow-hidden"
               >
                 <i class="fa-solid fa-address-book  dark:hover:text-slate-800"></i>
@@ -79,7 +91,9 @@ export default function Seller() {
                 className="flex items-center px-3 text-white py-2 dark:text-white dark:hover:text-orange-500 hover:bg-green-400 rounded-lg dark:hover:bg-white overflow-hidden"
               >
                 <i className="fa-solid fa-right-from-bracket dark:hover:text-slate-800"></i>
-                <span className="flex-1 ml-3 ">Logout</span>
+                <span className="flex-1 ml-3 " onClick={handleLogout}>
+                  Logout
+                </span>
               </NavLink>
             </li>
           </ul>

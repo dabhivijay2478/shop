@@ -14,6 +14,11 @@ import Addshow from "./components/seller/addshow/Addshow";
 import Admin from "./components/admin/Admin";
 import Adduser from "./components/admin/Adduser";
 import Seller from "./components/seller/Seller";
+import Error from "./components/Error";
+import Productreport from "./components/common/Productreport";
+import Userreport from "./components/admin/Userport";
+import Contactus from "./components/navbar/Contactus";
+import Contactusreport from "./components/common/Contactusreport";
 function App() {
   return (
     <div className="App">
@@ -22,10 +27,19 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/admin" element={<Admin />}>
           <Route path="adduser" element={<Adduser />} />
+          <Route path="userreport" element={<Userreport />} />
+          <Route path="contactus" element={<Contactusreport />} />
+          <Route path="adduser" element={<Adduser />} />
+          <Route path="productreport" element={<Productreport />} />
+
+          <Route path="*" element={<Error />} />
         </Route>
         <Route path="/seller" element={<Seller />}>
           <Route path="addproduct" element={<Addproduct />} />
           <Route path="addshow" element={<Addshow />} />
+          <Route path="productreport" element={<Productreport />} />
+
+          <Route path="*" element={<Error />} />
         </Route>
         <Route exact path="/" element={<HomePage />}>
           <Route path="/itemsection" element={<Itemsection />} />
@@ -33,8 +47,12 @@ function App() {
           <Route path="/item/:id" element={<ItemDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/Contact" element={<Contactus />} />
+
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="*" element={<Error />} />
         </Route>
+        <Route path="*" element={<Error />} />
       </Routes>
     </div>
   );
