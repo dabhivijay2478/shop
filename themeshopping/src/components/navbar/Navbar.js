@@ -15,7 +15,9 @@ const Navbar = () => {
           {/* <li>Womens</li>
           <li>Mens</li>
           <li>Clothing</li> */}
-          <li>Shows</li>
+          <Link to="/Show">
+            <li>Show</li>
+          </Link>
           <Link to="/cart">
             <li>
               &#128722;{" "}
@@ -28,8 +30,8 @@ const Navbar = () => {
             <li>Orders</li>
           </Link>
           <Link to="/Contact">
-          <li>Contact</li>
-        </Link>
+            <li>Contact</li>
+          </Link>
           <Link to="/login">
             <li>Login</li>
           </Link>{" "}

@@ -19,6 +19,7 @@ import Productreport from "./components/common/Productreport";
 import Userreport from "./components/admin/Userport";
 import Contactus from "./components/navbar/Contactus";
 import Contactusreport from "./components/common/Contactusreport";
+import Show from "./components/Show/Show";
 function App() {
   return (
     <div className="App">
@@ -47,6 +48,8 @@ function App() {
           <Route path="/item/:id" element={<ItemDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/Show" element={<Show />} />
+
           <Route path="/Contact" element={<Contactus />} />
 
           <Route path="/checkout" element={<Checkout />} />

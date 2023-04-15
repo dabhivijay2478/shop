@@ -27,6 +27,8 @@ export default function Register() {
 
     if (res.status === 400 || !data) {
       window.alert("Invaild");
+    } else if (res.status === 422 || !data) {
+      window.alert("Invaild");
     } else {
       window.alert("Sucess");
       history("/Login");
