@@ -8,6 +8,8 @@ const Checkout = (props) => {
   const [quiz, setQuiz] = useState([]);
   const [userAnswers, setUserAnswers] = useState([]);
   const [count, setCount] = useState(0);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // initialize state variable
 
   let discountPercent;
   if (count === 1) {
@@ -44,6 +46,8 @@ const Checkout = (props) => {
     } else {
       alert("Incorrect. Please try again.");
     }
+    setIsSubmitted(true);
+    setIsButtonDisabled(true);
   }
 
   const { cart, orders, addItemToOrderList, clearCart } =
@@ -176,6 +180,7 @@ const Checkout = (props) => {
                                       onChange={(event) =>
                                         handleAnswer(index, event)
                                       }
+                                      disabled={isSubmitted}
                                     />
                                   </div>
                                 </div>
@@ -183,6 +188,7 @@ const Checkout = (props) => {
                               <button
                                 type="button"
                                 onClick={() => checkAnswer(index)}
+                                disabled={isButtonDisabled}
                               >
                                 Check Answer
                               </button>
