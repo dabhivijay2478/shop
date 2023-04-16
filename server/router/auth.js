@@ -8,7 +8,7 @@ const router = express.Router();
 require("../db/dbconnect");
 const User = require("../models/adduser");
 const addshow = require("../models/addshow");
-const product = require("../models/addproducts");
+
 const order = require("../models/order");
 const Contact = require("../models/contactus");
 // Router for base path
@@ -111,31 +111,38 @@ router.post("/loginserver", async (req, res) => {
   }
 });
 
+const products = require("../models/addproducts");
+
 router.post("/addproduct", async (req, res) => {
-  const { ProductName, ProductShow, Description, Price, Rating } = req.body;
-  if (!ProductName || !ProductShow) {
+  const { name, show, brand, size, color, saleDiscount, price, rating, image } =
+    req.body;
+  if (!name || !show) {
     return res.status(422).json({ error: "Something Error" });
   }
   try {
-    // Check if user with given enrollment number already exists
-    const productexits = await product
-      .findOne({ ProductName: ProductName })
-      .then(async (productexits) => {
-        if (productexits) {
-          return res.status(422).json({ error: "ProductName already exits" });
+    // Check if product with given name already exists
+    const productExists = await products
+      .findOne({ name: name })
+      .then(async (productExists) => {
+        if (productExists) {
+          return res.status(422).json({ error: "Product name already exists" });
         }
 
-        const productadd = new product({
-          ProductName,
-          ProductShow,
-          Description,
-          Price,
-          Rating,
+        const productAdd = new products({
+          name,
+          show,
+          brand,
+          size,
+          color,
+          saleDiscount,
+          price,
+          rating,
+          image,
         });
-        await productadd.save();
+        await productAdd.save();
 
         // Return success response
-        res.status(201).json({ message: "Sucess" });
+        res.status(201).json({ message: "Success" });
       });
   } catch (error) {
     console.log(error);
@@ -214,7 +221,7 @@ router.post("/addquize", async (req, res) => {
 });
 
 router.get("/productdata", async (req, res) => {
-  const result = await product.find({});
+  const result = await products.find({});
 
   res.send(result);
 });
@@ -230,12 +237,16 @@ router.post("/addmutlipleproduct", async (req, res) => {
     // const users = await csvtojson().fromString(req.body);
     const mutlipleproduct = await req.body;
     for (let i = 0; i < mutlipleproduct.length; i++) {
-      const user = new product({
-        ProductName: mutlipleproduct[i].ProductName,
-        ProductShow: mutlipleproduct[i].ProductShow,
-        Description: mutlipleproduct[i].Description,
-        Price: mutlipleproduct[i].Price,
-        Rating: mutlipleproduct[i].Rating,
+      const user = new products({
+        name: mutlipleproduct[i].name,
+        brand: mutlipleproduct[i].brand,
+        size: mutlipleproduct[i].size,
+        show: mutlipleproduct[i].show,
+        color: mutlipleproduct[i].color,
+        saleDiscount: mutlipleproduct[i].saleDiscount,
+        price: mutlipleproduct[i].price,
+        rating: mutlipleproduct[i].rating,
+        image: mutlipleproduct[i].image,
       });
 
       await user.save();
@@ -276,5 +287,26 @@ router.get("/contactusreport", async (req, res) => {
 
   res.send(result);
 });
+
+router.post("/check", (req, res) => {
+  const { Question, Answer } = req.body;
+
+  addshow.findOne({ Question: Question })
+    .exec()
+    .then((show) => {
+      if (!show) {
+        res.status(404).send("Question not found");
+      } else if (show.Answer === Answer) {
+        res.send("Answer is correct!");
+      } else {
+        res.send("Answer is incorrect");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Internal Server Error");
+    });
+});
+
 
 module.exports = router;

@@ -34,9 +34,9 @@ export default function Login() {
       if (role === "Admin") {
         history("/admin");
         Cookies.set("Adminemail", email);
-      } else if (role === "Seller") {
+      } else if (role === "seller") {
         history("/seller");
-        Cookies.set("selleremail", email);
+        Cookies.set("Selleremail", email);
       } else if (role === "User") {
         history("/itemsection");
         Cookies.set("Useremail", email);

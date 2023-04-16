@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import "./Addproduct.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import csvtojson from "csvtojson";
-
 export default function Addproduct() {
   const history = useNavigate();
+
+  const [pname, setPname] = useState("");
+  const [pshow, setPshow] = useState("");
+  const [brand, setBrand] = useState("");
+  const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
+  const [saleDiscount, setSaleDiscount] = useState("");
+  const [price, setPrice] = useState("");
+  const [rating, setRating] = useState("");
+  const [image, setImage] = useState("");
   const [file, setFile] = useState(null);
-
-  const [pname, setPname] = useState([]);
-  const [pshow, setPshow] = useState([]);
-  const [description, setDescription] = useState([]);
-  const [price, setPrice] = useState([]);
-  const [rating, setRating] = useState([]);
-
   const addproduct = async (e) => {
     e.preventDefault();
     const res = await fetch("http://localhost:8000/addproduct", {
@@ -22,27 +24,30 @@ export default function Addproduct() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ProductName: pname,
-        ProductShow: pshow,
-        Description: description,
-        Price: price,
-        Rating: rating,
+        name: pname,
+        show: pshow,
+        brand: brand,
+        size: size,
+        color: color,
+        saleDiscount: saleDiscount,
+        price: price,
+        rating: rating,
+        image: image,
       }),
     });
     const data = res.json();
 
     if (res.status === 400 || !data) {
-      window.alert("Invaild");
+      window.alert("Invalid");
     } else {
-      window.alert("Sucess");
+      window.alert("Success");
       history("/seller");
     }
   };
-
   const handleFileInputChange = (event) => {
     setFile(event.target.files[0]);
   };
-  const addmutiliproduct = async () => {
+  const addmultiple = async () => {
     if (file) {
       const reader = new FileReader();
       reader.readAsText(file);
@@ -62,107 +67,125 @@ export default function Addproduct() {
   };
 
   return (
-    <div>
-      <body>
-        <form action="#" method="post">
-          <p>
-            <label for="name">Product Name</label>
-            <input
-              id="name"
-              name="pname"
-              type="text"
-              value={pname}
-              onChange={(e) => setPname(e.target.value)}
-            />
-          </p>
-          <p>
-            <label for="name">Product's Show</label>
-            <input
-              id="name"
-              name="show"
-              type="text"
-              value={pshow}
-              onChange={(e) => setPshow(e.target.value)}
-            />
-          </p>
-          <p>
-            <label for="desc">Description</label>
+    <>
+      <div>
+        <body>
+          <form action="#" method="post">
+            <p>
+              <label for="name">Product Name</label>
+              <input
+                id="name"
+                name="pname"
+                type="text"
+                value={pname}
+                onChange={(e) => setPname(e.target.value)}
+              />
+            </p>
+            <p>
+              <label for="name">Product's Show</label>
+              <input
+                id="name"
+                name="show"
+                type="text"
+                value={pshow}
+                onChange={(e) => setPshow(e.target.value)}
+              />
+            </p>
+            <p>
+              <label for="brand">Brand</label>
+              <input
+                id="brand"
+                name="brand"
+                type="text"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+              />
+            </p>
+            <p>
+              <label for="brand">Size</label>
+              <input
+                id="brand"
+                name="brand"
+                type="text"
+                value={size}
+                onChange={(e) => setSize(e.target.value)}
+              />
+            </p>
+            <p>
+              <label for="brand">Color</label>
+              <input
+                id="brand"
+                name="brand"
+                type="text"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+              />
+            </p>
+            <p>
+              <label for="brand">SalesDiscount</label>
+              <input
+                id="brand"
+                name="brand"
+                type="text"
+                value={saleDiscount}
+                onChange={(e) => setSaleDiscount(e.target.value)}
+              />
+            </p>
 
-            <input
-              id="description"
-              name="description"
-              type="textarea"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </p>
-          <p>
-            <label for="price">Price</label>
-            <input
-              id="price"
-              name="price"
-              type="text"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </p>
-          <p>
-            <label for="">Product Rating</label>
-            <select
-              name="fruit"
-              style={{
-                padding: "8px",
-                fontSize: "16px",
-                borderRadius: "5px",
-                border: "1px solid #ccc",
-              }}
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
-            >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </p>
-          <p>
-            <label for="image"></label>
-            <input
-              className="images"
-              id="image"
-              name="image"
-              type="file"
-              onChange={handleFileInputChange}
-            />
-          </p>
-
-          <p>
-            <input
-              className="addproduct"
-              type="submit"
-              value="ADD PRODUCT"
-              onClick={addproduct}
-              id="submit"
-            />
-          </p>
-          <p>
-            <input
-              className="addproduct"
-              type="submit"
-              value="ADD Multiple"
-              onClick={addmutiliproduct}
-              id="submit"
-            />
-          </p>
-        </form>
-        <script
-          src="https://code.jquery.com/jquery-1.11.0.min.js"
-          type="text/javascript"
-          charset="utf-8"
-        ></script>
-        <script src="js/app.js" type="text/javascript" charset="utf-8"></script>
-      </body>
-    </div>
+            <p>
+              <label for="brand">Price</label>
+              <input
+                id="brand"
+                name="brand"
+                type="text"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </p>
+            <p>
+              <label for="brand">Rating</label>
+              <input
+                id="brand"
+                name="brand"
+                type="text"
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+              />
+            </p>
+            <p>
+              <label for="brand">Image</label>
+              <input
+                id="brand"
+                name="brand"
+                type="text"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              />
+            </p>
+            <button onClick={addproduct}>Addproduct</button>
+            <p>
+              <label for="file">File</label>
+              <input
+                id="File"
+                name="File"
+                type="File"
+                onChange={handleFileInputChange}
+              />
+            </p>
+            <button onClick={addmultiple}>Multi Addproduct</button>
+          </form>
+          <script
+            src="https://code.jquery.com/jquery-1.11.0.min.js"
+            type="text/javascript"
+            charset="utf-8"
+          ></script>
+          <script
+            src="js/app.js"
+            type="text/javascript"
+            charset="utf-8"
+          ></script>
+        </body>
+      </div>
+    </>
   );
 }

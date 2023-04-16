@@ -5,13 +5,13 @@ export default function Seller() {
   const nav = useNavigate();
 
   useEffect(() => {
-    const isLoggedIn = Cookies.get("Seller");
+    const isLoggedIn = Cookies.get("seller");
     if (!isLoggedIn) {
       return nav("/login");
     }
   }, []);
   const handleLogout = async () => {
-    Cookies.remove("Seller");
+    Cookies.remove("seller");
     window.alert("Log Out");
   };
   return (
