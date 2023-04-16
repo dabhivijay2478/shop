@@ -4,6 +4,8 @@ const bycrypt = require("bcrypt");
 const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
+dotenv.config({ path: "./email.env" });
+
 const router = express.Router();
 require("../db/dbconnect");
 const User = require("../models/adduser");
@@ -291,7 +293,8 @@ router.get("/contactusreport", async (req, res) => {
 router.post("/check", (req, res) => {
   const { Question, Answer } = req.body;
 
-  addshow.findOne({ Question: Question })
+  addshow
+    .findOne({ Question: Question })
     .exec()
     .then((show) => {
       if (!show) {
@@ -308,5 +311,62 @@ router.post("/check", (req, res) => {
     });
 });
 
+router.get("/fetchquiz", async (req, res) => {
+  const result = await addshow.find({}).limit(3);
+
+  res.send(result);
+});
+
+router.delete("/deleteproducts/:name", function (req, res) {
+  products
+    .deleteOne({ name: req.params.name })
+    .then(() => res.send("Product deleted successfully."))
+    .catch((err) => res.status(500).send(err));
+});
+
+const nodemailer = require("nodemailer");
+router.post("/sendemail", async (req, res) => {
+  const FromEmail = process.env.MAIL_USERNAME;
+  const Password = process.env.MAIL_PASSWORD;
+  const { ToEmail, password } = req.body;
+  console.log(ToEmail);
+
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    auth: {
+      user: FromEmail,
+      pass: Password,
+    },
+  });
+
+  let mailOptions = {
+    from: FromEmail,
+    to: ToEmail,
+    subject: "Your Account Has Been Created!",
+    html: `    <p>Dear ${ToEmail},</p>
+    <p>Thank you for registering with our platform! We're excited to have you on board.</p>
+    <p>Your account has been successfully created and is now ready for use. You can log in to your account using the following credentials:</p>
+    <ul>
+      <li>Email: ${ToEmail}</li>
+      <li>Password: ${password}</li>
+    </ul>
+    <p>If you have any questions or encounter any issues, please don't hesitate to reach out to our support team. We are always here to assist you.</p>
+
+    
+    <p>Thank you again for joining our platform. We look forward to serving you!</p>
+    <p>Best regards,<br>[Raj's Creation]</p>
+`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    // console.log("Email sent: " + info.response);
+    res.status(200).send("Email sent successfully!");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
 
 module.exports = router;

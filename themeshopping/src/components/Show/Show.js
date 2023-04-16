@@ -20,9 +20,10 @@ export default function Show() {
   };
 
   const filteredData = mongoData.filter((item) => {
-    if (searchQuery !== "" && !item.name.includes(searchQuery)) {
+    if (searchQuery !== "" && !item.name.includes(searchQuery) && !item.show.includes(searchQuery)) {
       return false;
     }
+
     return true;
   });
 
@@ -52,6 +53,8 @@ export default function Show() {
           </div>
           <div className="p-4">
             <h3 className="font-semibold text-lg mb-2">{item.name}</h3>
+            <h3 className="font-semibold text-lg mb-2">{item.show}</h3>
+
             <p className="text-gray-700 mb-4">{item.description}</p>
             <div className="flex justify-between items-center">
               <span className="font-bold text-lg">${item.price}</span>

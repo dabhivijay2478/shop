@@ -26,12 +26,33 @@ export default function Register() {
     const data = res.json();
 
     if (res.status === 400 || !data) {
-      window.alert("Invaild");
+      window.alert("Invalid");
     } else if (res.status === 422 || !data) {
-      window.alert("Invaild");
+      window.alert("Invalid");
     } else {
-      window.alert("Sucess");
-      history("/Login");
+      // Send registration confirmation email with login credentials
+      const sendEmailRes = await fetch("http://localhost:8000/sendemail", {
+        method: "POST",
+        changeOrigin: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ToEmail: email,
+          password: password,
+        }),
+      });
+
+      if (sendEmailRes.status === 200) {
+        window.alert(
+          "Registration successful. Please check your email for login credentials."
+        );
+        history("/Login");
+      } else {
+        window.alert(
+          "Registration successful, but failed to send confirmation email."
+        );
+      }
     }
   };
   return (

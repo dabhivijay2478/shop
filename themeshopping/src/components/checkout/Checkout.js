@@ -1,10 +1,51 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../../context/GlobalState";
 import "./Checkout.css";
 import Quiz from "./Quiz";
 
-const Checkout = () => {
+const Checkout = (props) => {
+  const [quiz, setQuiz] = useState([]);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [count, setCount] = useState(0);
+
+  let discountPercent;
+  if (count === 1) {
+    discountPercent = 2;
+  } else if (count === 2) {
+    discountPercent = 3;
+  } else if (count >= 3) {
+    discountPercent = 5;
+  } else {
+    discountPercent = 0;
+  }
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("http://localhost:8000/fetchquiz");
+      const result = await response.json();
+      setQuiz(result);
+    }
+    fetchData();
+  }, []);
+
+  function handleAnswer(index, event) {
+    const updatedAnswers = [...userAnswers];
+    updatedAnswers[index] = event.target.value;
+    setUserAnswers(updatedAnswers);
+  }
+
+  function checkAnswer(index) {
+    const correctAnswer = quiz[index].Answer;
+    const userAnswer = userAnswers[index];
+    if (userAnswer === correctAnswer) {
+      alert("Correct!");
+      setCount(count + 1);
+      console.log(count);
+    } else {
+      alert("Incorrect. Please try again.");
+    }
+  }
+
   const { cart, orders, addItemToOrderList, clearCart } =
     useContext(GlobalContext);
   const { discount, extraFees, tax } = { discount: 20, extraFees: 99, tax: 5 };
@@ -26,6 +67,7 @@ const Checkout = () => {
     clearCart();
     setIsOrdered(true);
   };
+
   return (
     <>
       <div className="checkout-container">
@@ -70,7 +112,7 @@ const Checkout = () => {
             </div>
 
             <button className="item-btn" onClick={handlePay}>
-              Pay ${total}
+              Pay ${total - discountPercent}
             </button>
             <button
               className="bg-pink-500 mt-5 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
@@ -104,7 +146,51 @@ const Checkout = () => {
                   </div>
                   {/*body*/}
                   <div className="relative p-6 flex-auto">
-                    <Quiz />
+                    <>
+                      <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+                        {quiz.map((item, index) => (
+                          <form
+                            action=""
+                            key={index}
+                            className="mx-auto mt-8 mb-0 max-w-md space-y-4"
+                          >
+                            <>
+                              <div>
+                                <div className="relative">
+                                  <input
+                                    type="text"
+                                    className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
+                                    placeholder="Question"
+                                    value={item.Question}
+                                    readOnly
+                                  />
+                                </div>
+
+                                <div>
+                                  <div className="relative">
+                                    <input
+                                      type="text"
+                                      className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
+                                      placeholder="write your answer here"
+                                      value={userAnswers[index] || ""}
+                                      onChange={(event) =>
+                                        handleAnswer(index, event)
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => checkAnswer(index)}
+                              >
+                                Check Answer
+                              </button>
+                            </>
+                          </form>
+                        ))}
+                      </div>
+                    </>
                   </div>
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -114,12 +200,6 @@ const Checkout = () => {
                       onClick={() => setShowModal(false)}
                     >
                       Close
-                    </button>
-                    <button
-                      className="item-btn"
-                      onClick={() => setShowModal(false)}
-                    >
-                      Sumbit
                     </button>
                   </div>
                 </div>
